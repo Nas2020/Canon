@@ -1,0 +1,27 @@
+{
+  "name": "compile-deploy-typescript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/deploy.js",
+    "compile": "tsc && node dist/compile.js",
+    "deploy": "tsc && node dist/deploy.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0"
+  },
+  "dependencies": {
+    "@ethereumjs/common": "^3.2.0",
+    "@ethereumjs/tx": "^4.2.0",
+    "@types/node": "^20.4.5",
+    "@types/web3": "^1.2.2",
+    "solc": "^0.8.21",
+    "web3": "^4.0.3"
+  }
+}
