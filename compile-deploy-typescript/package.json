@@ -14,13 +14,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/dotenv": "^8.2.0"
+    "@types/dotenv": "^8.2.0",
+    "@types/node": "^20.4.7",
+    "@types/web3": "^1.2.2"
   },
   "dependencies": {
-    "@ethereumjs/common": "^3.2.0",
-    "@ethereumjs/tx": "^4.2.0",
-    "@types/node": "^20.4.5",
-    "@types/web3": "^1.2.2",
     "solc": "^0.8.21",
     "web3": "^4.0.3"
   }

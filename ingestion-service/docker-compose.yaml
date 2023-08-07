@@ -1,0 +1,10 @@
+version: "3"
+services:
+  mongodb:
+    image: mongo:5.0.8
+    ports:
+      - "27017:27017"
+    environment:
+      - COMPOSE_HTTP_TIMEOUT=900
+      - DOCKER_CLIENT_TIMEOUT=900
+    entrypoint: mongod --bind_ip "0.0.0.0"
