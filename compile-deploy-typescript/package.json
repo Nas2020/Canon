@@ -8,6 +8,7 @@
     "start": "node dist/deploy.js",
     "compile": "tsc && node dist/compile.js",
     "deploy": "tsc && node dist/deploy.js",
+    "interact": "tsc && node dist/interact.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

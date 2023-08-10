@@ -44,7 +44,7 @@ contract Utility {
 
     constructor() {
         owner = msg.sender;
-        //NYMs[owner] = NYM(2, 1, "");
+        NYMs[owner] = NYM(2, 1, "http://canon.ca");
     }
 
     function registerNYM(
@@ -55,6 +55,7 @@ contract Utility {
     ) public onlyEndorser {
         require(NYMs[_dest].role == 0, "NYM already exists");
         NYMs[_dest] = NYM(_role, _version, _endpoint);
+        emit NYMRegistered(_role, _version, _endpoint);
     }
 
     function registerSchema(
@@ -120,6 +121,8 @@ contract Utility {
     }
 
     // Events
+    event NYMRegistered(uint role, uint8 version, string endpoint);
     event SchemaRegistered(bytes20 indexed schemaID, string name);
     event CredDefRegistered(bytes20 indexed credDefID, string tag);
+    
 }
