@@ -2,79 +2,12 @@ import Web3 from 'web3';
 import mongoose from 'mongoose';
 import { processInteractionData } from './process-interaction-data';
 
-async function fetchDataFromMongoBlock() {
-    const collections = await mongoose.connection.db.listCollections({ name: 'recentblocknumber' }).toArray();
+export async function subscribeToNewBlocks(web3: Web3) {
 
-    if (collections.length > 0) {
-        // If the collection exists, fetch data
-        const dataFromMongoBlock = await mongoose.connection.collection('recentblocknumber').find({}).toArray();
-        console.log("dataFromDB", dataFromMongoBlock);
-        return dataFromMongoBlock;
-    } else {
-        console.log("'mongoBlockData' collection does not exist.");
-        return null
-    }
-}
-
-export async function subscribeToNewBlocks(web3: Web3, contractAddress: string, abi: any) {
-
-
-    // Initialize contract object with web3
-    //const utilityContract = new web3.eth.Contract(abi, contractAddress);
-    // // Event listener for NYMRegistered
-    // const nymREvents = await utilityContract.events.NYMRegistered({ fromBlock: 'latest' })
-    // nymREvents.on('data', event => {
-    //     console.log('NYMRegistered event received:', event);
-
-    //     // Extract event details 
-    //     const eventData = {
-    //         role: event.returnValues.role,
-    //         version: event.returnValues.version,
-    //         endpoint: event.returnValues.endpoint
-    //     };
-    //     console.log('eventData', eventData);
-    //     // Save event details to MongoDB
-    //     mongoose.connection.collection('NYMRegisteredEvents').insertOne(eventData);
-    // })
-    // // Event listener for SchemaRegistered
-    // const SchemaREvents = await utilityContract.events.SchemaRegistered({ fromBlock: 'latest' })
-    // SchemaREvents.on('data', event => {
-    //     console.log('SchemaRegistered event received:', event);
-
-    //     // Extract event details 
-    //     const eventData = {
-    //         schemaID: event.returnValues.schemaID,
-    //         name: event.returnValues.name
-    //         // ... capture other relevant details as needed
-    //     };
-    //     console.log('eventData', eventData);
-    //     // Save event details to MongoDB
-    //     mongoose.connection.collection('SchemaRegisteredEvents').insertOne(eventData);
-    // })
-    // // Event listener for CredDefRegistered
-    // const CredREvents = await utilityContract.events.CredDefRegistered({ fromBlock: 'latest' })
-    // CredREvents.on('data', event => {
-    //     console.log('CredDefRegistered event received:', event);
-
-    //     // Extract event details 
-    //     const eventData = {
-    //         credDefID: event.returnValues.credDefID,
-    //         tag: event.returnValues.tag
-    //     };
-    //     console.log('eventData', eventData);
-    //     // Save event details to MongoDB
-    //     mongoose.connection.collection('CredRegisteredEvents').insertOne(eventData);
-    // })
-
-    const response = await fetchDataFromMongoBlock();
     const subscription = await web3.eth.subscribe('newHeads');
-
     subscription.on('data', async blockhead => {
         const transactionCount = await web3.eth.getBlockTransactionCount();
-
         const block = await web3.eth.getBlock(blockhead.number, true);
-
-
 
         if (transactionCount > 0) {
 
@@ -101,11 +34,10 @@ export async function subscribeToNewBlocks(web3: Web3, contractAddress: string, 
                 else if ((txDetails.to !== null && txDetails.to !== undefined) && (txDetails.input !== null && txDetails.input !== undefined)) {
 
                     processInteractionData(receipt, web3);
-          
+
                 }
             });
-            // save block and transaction details to MongoDB
-            //mongoose.connection.collection('blocks').insertOne(blockData);
+         
 
         } else {
             console.log("Block does not contain any transactions.");
@@ -339,3 +271,58 @@ export async function subscribeToNewBlocks(web3: Web3, contractAddress: string, 
 //     );
 
 // }
+
+
+
+
+////////////////////////////////////////////////////////***********LISTENING TO EVENTS**********//////////////////////////////////////////////////////////////////// 
+
+    // Initialize contract object with web3
+    //const utilityContract = new web3.eth.Contract(abi, contractAddress);
+    // // Event listener for NYMRegistered
+    // const nymREvents = await utilityContract.events.NYMRegistered({ fromBlock: 'latest' })
+    // nymREvents.on('data', event => {
+    //     console.log('NYMRegistered event received:', event);
+
+    //     // Extract event details
+    //     const eventData = {
+    //         role: event.returnValues.role,
+    //         version: event.returnValues.version,
+    //         endpoint: event.returnValues.endpoint
+    //     };
+    //     console.log('eventData', eventData);
+    //     // Save event details to MongoDB
+    //     mongoose.connection.collection('NYMRegisteredEvents').insertOne(eventData);
+    // })
+    // // Event listener for SchemaRegistered
+    // const SchemaREvents = await utilityContract.events.SchemaRegistered({ fromBlock: 'latest' })
+    // SchemaREvents.on('data', event => {
+    //     console.log('SchemaRegistered event received:', event);
+
+    //     // Extract event details
+    //     const eventData = {
+    //         schemaID: event.returnValues.schemaID,
+    //         name: event.returnValues.name
+    //         // ... capture other relevant details as needed
+    //     };
+    //     console.log('eventData', eventData);
+    //     // Save event details to MongoDB
+    //     mongoose.connection.collection('SchemaRegisteredEvents').insertOne(eventData);
+    // })
+    // // Event listener for CredDefRegistered
+    // const CredREvents = await utilityContract.events.CredDefRegistered({ fromBlock: 'latest' })
+    // CredREvents.on('data', event => {
+    //     console.log('CredDefRegistered event received:', event);
+
+    //     // Extract event details
+    //     const eventData = {
+    //         credDefID: event.returnValues.credDefID,
+    //         tag: event.returnValues.tag
+    //     };
+    //     console.log('eventData', eventData);
+    //     // Save event details to MongoDB
+    //     mongoose.connection.collection('CredRegisteredEvents').insertOne(eventData);
+    // })
+
+    //const response = await fetchDataFromMongoBlock();
+

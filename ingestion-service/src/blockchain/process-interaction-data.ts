@@ -74,14 +74,14 @@ export async function processInteractionData(receipt: any, web3: Web3) {
 
                 if (log.data) {
 
-                    const data = log.data;
-                    console.log("data(receipt.logs.data)", data)
+                    const logData = log.data;
+                    //console.log("data(receipt.logs.data)", data)
 
-                    const offset = parseInt((<string>data).slice(0, 66), 16) * 2;
+                    const offset = parseInt((<string>logData).slice(0, 66), 16) * 2;
                     // Read the length of the string (usually 32 bytes)
-                    const length = parseInt((<string>data).slice(offset, offset + 64), 16) * 2;
+                    const length = parseInt((<string>logData).slice(offset, offset + 64), 16) * 2;
                     // Extract the string data
-                    const rawStringData = (<string>data).slice(offset + 64, offset + 64 + length);
+                    const rawStringData = (<string>logData).slice(offset + 64, offset + 64 + length);
                     // Convert the hex data to a string
                     name = web3.utils.hexToUtf8('0x' + rawStringData);
                     name = name.replace(/\u0000/g, '');
@@ -109,7 +109,7 @@ export async function processInteractionData(receipt: any, web3: Web3) {
                 if (log.data) {
 
                     const logData = log.data;
-                    console.log("data(receipt.logs.data)", data)
+                    //console.log("data(receipt.logs.data)", data)
 
                     const offset = parseInt((<string>logData).slice(0, 66), 16) * 2;
                     // Read the length of the string (usually 32 bytes)
