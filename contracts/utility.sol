@@ -55,7 +55,7 @@ contract Utility {
     ) public onlyEndorser {
         require(NYMs[_dest].role == 0, "NYM already exists");
         NYMs[_dest] = NYM(_role, _version, _endpoint);
-        emit NYMRegistered(_role, _version, _endpoint);
+        emit NYMRegistered(_dest,_role, _version, _endpoint);
     }
 
     function registerSchema(
@@ -121,7 +121,7 @@ contract Utility {
     }
 
     // Events
-    event NYMRegistered(uint role, uint8 version, string endpoint);
+    event NYMRegistered(address indexed account, uint8 role, uint8 version, string endpoint);
     event SchemaRegistered(bytes20 indexed schemaID, string name);
     event CredDefRegistered(bytes20 indexed credDefID, string tag);
     

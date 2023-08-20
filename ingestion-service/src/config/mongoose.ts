@@ -14,8 +14,10 @@ export async function connectToDatabase() {
             bufferCommands: true,
             autoIndex: true,
             autoCreate: true
-        });
-        console.log('Connected to MongoDB');
+        }).then(() => console.log('Connected to MongoDB'))
+            .catch(err => console.error('Error connecting to MongoDB:', err));;
+        //console.log('Connected to MongoDB');
+
     } catch (error) {
         console.error('Error connecting to MongoDB:', error);
         process.exit(1);

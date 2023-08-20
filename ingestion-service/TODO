@@ -1,95 +1,36 @@
-//Change to code flow
+docker build -t nas2020/canon-ingestion:1.0.0 .
 
-//check transaction in the block for interaction to contract.
-//record to address as contractaddress logs and topics as events in mongodb, how ?
-//examine receipts and see what can you do?
+docker run -p 3000:3000 \
+  --env PORT=3000 \
+  --env MONGODB_URI=mongodb://host.docker.internal:27017/canon \
+  --env BOOTNODE_WS_URL=ws://35.182.139.254:8555 \
+  --env NODE2_WS_URL=ws://3.98.144.85:8556 \
+  --env BOOTNODE_URL=http://35.182.139.254:8545 \
+  --env NODE2_URL=http://3.98.144.85:8546 \
+  nas2020/canon-ingestion:1.0.0
 
+docker build -t ghcr.io/nas2020/canon-ingestion:v0.0.4 .
 
+docker push ghcr.io/nas2020/canon-ingestion:v0.0.4
 
-//RESET the database actions
-
-contracts
-mongoBlockData > recentblocknumber
-network > peers
-interactions 
-    status,
-    blockNumber,
-    transactionHash,
-    contractAddress,
-    events : {
-NYMRegistered: {
-address,
-role,
-version,
-endpoint
-},  
-
-SchemaRegistered: {
-    schemaID,
-    name
-
-},
-CredDefRegistered: {
-    credDefID,
-    tag
-
-},
-        }
-    
-    
+docker pull ghcr.io/nas2020/canon-ingestion:v0.0.4
 
 
 
+docker run -d \
+  --env PORT=3000 \
+  --env MONGODB_URI=mongodb://host.docker.internal:27017/canon \
+  --env BOOTNODE_WS_URL=ws://35.182.139.254:8555 \
+  --env NODE2_WS_URL=ws://3.98.144.85:8556 \
+  --env BOOTNODE_URL=http://35.182.139.254:8545 \
+  --env NODE2_URL=http://3.98.144.85:8546 \
+ ghcr.io/nas2020/canon-ingestion:v0.0.4
 
-
-//SYNC once the server start-up or reset.. or periodically compare the block heights between mongodb and blockchain(network)
-
-// 1, get current mongodb stored 'blockNumber' - mbn
-// 2, get blockchain latest 'blockNumber' - bbn
-// 3, compare these two values; if it is different (less than mbn < bbn, It should be the case if mongdb is down for a while and up again )
-
-
-
-db.interactions.find().pretty()
-
-{
-        "_id" : ObjectId("64d80a92bba5f7a41af13a32"),
-        "status" : "success",
-        "transactionHash" : "0x3a6a761cb7e6857401fa6178e085dd294d99db1306b10d5c3ddc5abb1aa8446f",
-        "contractAddress" : "0xdf3149b11d7457ea472a56463bb9c0928fc25946",
-        "event" : {
-                "eventName" : "NYMRegistered",
-                "data" : {
-                        "account" : "0xf17f52151ebef6c7334fad080c5704d77216b732",
-                        "role" : 2,
-                        "version" : 10,
-                        "endpoint" : "http://canon.ca"
-                }
-        }
-}
-{
-        "_id" : ObjectId("64d80acebba5f7a41af13a35"),
-        "status" : "success",
-        "transactionHash" : "0x9cf8cc2703d6af30e77275f99b771027f4c325ea854c4f2c2611403ee21fc1e2",
-        "contractAddress" : "0xdf3149b11d7457ea472a56463bb9c0928fc25946",
-        "event" : {
-                "eventName" : "SchemaRegistered",
-                "data" : {
-                        "schemaID" : "0xae4160c58937727da96cdd43b874cfd6efd059b3",
-                        "name" : "ExampleSchema-2"
-                }
-        }
-}
-{
-        "_id" : ObjectId("64d80b0abba5f7a41af13a38"),
-        "status" : "success",
-        "transactionHash" : "0xa10cf400fc3bc35556c1032a466713de801ebf1fb043e3a495179b9da442f66c",
-        "contractAddress" : "0xdf3149b11d7457ea472a56463bb9c0928fc25946",
-        "event" : {
-                "eventName" : "CredDefRegistered",
-                "data" : {
-                        "credDefID" : "0x789c98b47ec0aa60ebea91befd3268028d735fbc",
-                        "tag" : "\fExampleTag-2"
-                }
-        }
-}
+ docker run \
+  --env PORT=3000 \
+  --env MONGODB_URI=mongodb://host.docker.internal:27017/canon \
+  --env BOOTNODE_WS_URL=ws://35.182.139.254:8555 \
+  --env NODE2_WS_URL=ws://3.98.144.85:8556 \
+  --env BOOTNODE_URL=http://35.182.139.254:8545 \
+  --env NODE2_URL=http://3.98.144.85:8546 \
+ ghcr.io/nas2020/canon-ingestion:v0.0.4

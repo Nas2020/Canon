@@ -27,10 +27,16 @@
 		"anonymous": false,
 		"inputs": [
 			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			},
+			{
 				"indexed": false,
-				"internalType": "uint256",
+				"internalType": "uint8",
 				"name": "role",
-				"type": "uint256"
+				"type": "uint8"
 			},
 			{
 				"indexed": false,

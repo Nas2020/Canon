@@ -1,6 +1,6 @@
 // network.ts
 import Web3 from 'web3';
-
+import mongoose from 'mongoose';
 
 export async function getPeers(web3: Web3) {
     try {
@@ -16,17 +16,23 @@ export async function getPeers(web3: Web3) {
     }
 }
 
-// export async function getPeerCount(web3: Web3) {
-//     try {
-//         // @ts-ignore
-//         const response = await web3.currentProvider.request({ method: 'net_peerCount', params: [], id: Date.now() });
-//         //console.log("response", response)
-//         if (response && typeof response.result === 'string') {
-//             return parseInt(response.result, 16);  // response is in hex, convert it to decimal
-//         } else {
-//             throw new Error('Unexpected response from provider');
-//         }
-//     } catch (error) {
-//         console.error('Error getting peer count:', error);
-//     }
-// }
+function extractDesiredFields(peer: any) {
+    const { version, name, network, port, id, protocols, enode } = peer;
+    return { version, name, network, port, id, protocols, enode };
+}
+
+
+export const peerInfo = async (web3: Web3)=>{
+
+    const peerInfo = await getPeers(web3);
+    let transformedPeerInfo;
+    if (peerInfo)
+        transformedPeerInfo = peerInfo.map(extractDesiredFields);
+    const networkData = {
+        peerInfo: transformedPeerInfo
+    };
+    // Save event details to MongoDB
+    const networkCollection = mongoose.connection.collection('peers');
+    networkCollection.replaceOne({}, networkData, { upsert: true });
+
+} 

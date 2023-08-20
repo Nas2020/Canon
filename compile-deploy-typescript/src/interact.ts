@@ -44,34 +44,34 @@ async function interact() {
         const _version = 10; // example
         const _endpoint = "http://canon.ca"; // example
 
-        // 1. Register a NYM
-        const tx = await (UtilityContract.methods.registerNYM as any)(_dest, _role, _version, _endpoint);
-        const gas = await tx.estimateGas({ from: anotherAccount });
-        const gasPrice = await web3.eth.getGasPrice();
-        const data = tx.encodeABI();
-        const nonce = await web3.eth.getTransactionCount(anotherAccount);
+        // // 1. Register a NYM
+        // const tx = await (UtilityContract.methods.registerNYM as any)(_dest, _role, _version, _endpoint);
+        // const gas = await tx.estimateGas({ from: defaultAccount });
+        // const gasPrice = await web3.eth.getGasPrice();
+        // const data = tx.encodeABI();
+        // const nonce = await web3.eth.getTransactionCount(defaultAccount);
 
-        const rawTx = {
-            from: anotherAccount,
-            to: deployedAddress,
-            gas,
-            gasPrice,
-            data,
-            nonce,
-        };
-        const signedTx = await web3.eth.accounts.signTransaction(rawTx, '0x' + PRIVATE_KEY_2);
-        const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction as string);
-        console.log('Transaction Hash for registerNYM:', receipt.transactionHash);
+        // const rawTx = {
+        //     from: defaultAccount,
+        //     to: deployedAddress,
+        //     gas,
+        //     gasPrice,
+        //     data,
+        //     nonce,
+        // };
+        // const signedTx = await web3.eth.accounts.signTransaction(rawTx, '0x' + PRIVATE_KEY_1);
+        // const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction as string);
+        // console.log('Transaction Hash for registerNYM:', receipt.transactionHash);
 
-        const nymDetails = await (UtilityContract.methods.getNYM as any)(anotherAccount).call();
-        console.log('NYM details:', nymDetails);
+        // const nymDetails = await (UtilityContract.methods.getNYM as any)(defaultAccount).call();
+        // console.log('NYM details:', nymDetails);
 
 
         // 1. Register a Schema
         const schema_owner = defaultAccount;
         const trust_registry = anotherAccount;
         const version = 1;
-        const name = "ExampleSchema-2";
+        const name = "ExampleSchema-8";
         const attributes = ["attribute1", "attribute2", "attribute3"];
 
         const txSchema = await (UtilityContract.methods.registerSchema as any)(schema_owner, trust_registry, version, name, attributes);
@@ -91,8 +91,6 @@ async function interact() {
 
         const signedTxSchema = await web3.eth.accounts.signTransaction(rawTxSchema, '0x' + PRIVATE_KEY_1);
         const receiptSchema = await web3.eth.sendSignedTransaction(signedTxSchema.rawTransaction as string);
-        // console.log('receiptSchema:', receiptSchema);
-        //console.log('All logs:', receiptSchema.logs);
         console.log('Transaction Hash for registerSchema:', receiptSchema.transactionHash);
 
         let schemaRegisteredEvent;
@@ -119,7 +117,7 @@ async function interact() {
         const cred_def_owner = defaultAccount;
         const revocation_registry = address3;
         const signature = 1;  // example value, adjust as needed
-        const schema_id = schemaID; const tag = "ExampleTag-2";
+        const schema_id = schemaID; const tag = "ExampleTag-8";
 
         const txCredDef = await (UtilityContract.methods.registerCredDef as any)(cred_def_owner, trust_registry, revocation_registry, signature, schema_id, tag);
         const gasCredDef = await txCredDef.estimateGas({ from: defaultAccount });
